@@ -116,14 +116,11 @@ static CGFloat DegreesToRadians(CGFloat degrees) {return degrees * M_PI / 180;};
     [super stop];
 
     self.videoDataOutput = nil;
-    if (videoDataOutputQueue) {
-        dispatch_release(videoDataOutputQueue);
-    }
 
     if (self.recordVideo == YES) {
 
         if (self.recordAssetWriter.status == AVAssetWriterStatusWriting) {
-            [self.recordAssetWriter finishWriting];
+            [self.recordAssetWriter finishWritingWithCompletionHandler:nil];
             NSLog(@"[Camera] recording stopped");
         } else {
             NSLog(@"[Camera] Recording Error: asset writer status is not writing");
@@ -435,7 +432,6 @@ static CGFloat DegreesToRadians(CGFloat degrees) {return degrees * M_PI / 180;};
         // delegate image processing to the delegate
         cv::Mat image(height, width, format_opencv, bufferAddress, bytesPerRow);
 
-        cv::Mat* result = NULL;
         CGImage* dstImage;
 
         if ([self.delegate respondsToSelector:@selector(processImage:)]) {

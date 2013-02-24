@@ -384,7 +384,10 @@ int CvCaptureCAM::startCaptureDevice(int cameraNum) {
         mCaptureDecompressedVideoOutput.alwaysDiscardsLateVideoFrames = YES;
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-        mCaptureDecompressedVideoOutput.minFrameDuration = CMTimeMake(1, 30);
+        for (AVCaptureConnection *connection in [mCaptureDecompressedVideoOutput connections])
+        {
+            [connection setVideoMinFrameDuration:CMTimeMake(1, 30)];
+        }
 #endif
 
         //Slow. 1280*720 for iPhone4, iPod back camera. 640*480 for front camera
@@ -1246,7 +1249,7 @@ CvVideoWriter_AVFoundation::~CvVideoWriter_AVFoundation() {
     NSAutoreleasePool* localpool = [[NSAutoreleasePool alloc] init];
 
     [mMovieWriterInput markAsFinished];
-    [mMovieWriter finishWriting];
+    [mMovieWriter finishWritingWithCompletionHandler:nil];
     [mMovieWriter release];
     [mMovieWriterInput release];
     [mMovieWriterAdaptor release];

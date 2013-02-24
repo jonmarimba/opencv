@@ -9,6 +9,7 @@
 #
 # ----------------------------------------------------------------------------
 
+set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /usr/lib)
 set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
 
 # --------------------------------------------------------------
